@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>李始燕 Siyeon | QWER 專屬介紹頁</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        /* 導覽列 */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* 原本的橫幅 (已被 Splash Screen 蓋過，保留作為備用) */
+        .hero-banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url('https://a.ksd-i.com/s/800_86400_3c5af609b85ed15faec332e18f1db726/static.koreastardaily.com/2026-02-14/161731-1051654.jpg') center/cover no-repeat;
+            height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding-top: 60px;
+        }
+        .hero-banner h1 {
+            font-size: 4.5rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            color: #fff;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .hero-banner p {
+            font-size: 1.5rem;
+            color: #fe655c;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        /* 區塊標題設計 */
+        .section-title {
+            text-align: center;
+            font-weight: 800;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #2E8B57;
+            text-transform: uppercase;
+        }
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: #fe655c;
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+
+        /* 關於我：資料卡片 */
+        .info-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            height: 100%;
+        }
+        .info-list li {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            border-bottom: 1px dashed #eee;
+            padding-bottom: 10px;
+        }
+        .info-list i {
+            color: #2E8B57;
+            margin-right: 10px;
+            font-size: 1.3rem;
+        }
+
+        /* 時間軸設計 */
+        .timeline {
+            border-left: 4px solid #2E8B57;
+            padding-left: 30px;
+            margin-left: 20px;
+        }
+        .timeline-item {
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: -42px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background-color: #fe655c;
+            border: 4px solid white;
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px #2E8B57;
+        }
+        .timeline-date {
+            font-weight: 800;
+            color: #fe655c;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        /* 照片牆圖片特效 */
+        .gallery-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .gallery-img:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        footer {
+            background-color: #1a1a1a;
+            color: #ccc;
+        }
+
+        /* =========================================
+           終極霸氣 Splash Screen (大尺寸完美 RWD 版)
+           ========================================= */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #0f1712 0%, #1e2e22 100%); /* 加深背景，凸顯照片 */
+            z-index: 9999;
+            transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out; 
+            display: flex;
+            align-items: center;
+        }
+
+        #splash-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .splash-text-box {
+            color: white;
+            padding: 0 2rem;
+        }
+        .splash-title {
+            font-size: clamp(3.5rem, 8vw, 6rem); /* 字體自動放大 */
+            font-weight: 900;
+            letter-spacing: 5px;
+            margin-bottom: 0;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+        }
+        .splash-subtitle {
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            font-weight: 300;
+            color: #fe655c;
+            letter-spacing: 2px;
+        }
+
+        /* 【關鍵魔法】解除所有寬度限制，改用高度 85vh + 黃金比例撐開 */
+        .splash-img {
+            height: 85vh;             /* 強制佔據螢幕高度的 85% */
+            aspect-ratio: 3 / 4;      /* 強制鎖定完美的雜誌直式比例 */
+            object-fit: cover;        /* 完美填滿框框不變形 */
+            object-position: center 15%; 
+            border-radius: 20px;
+            border: 12px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.9);
+            transition: transform 0.4s ease;
+        }
+        .splash-img:hover {
+            transform: translateY(-8px) scale(1.02);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 2.5rem;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
+            40% { transform: translate(-50%, -15px); }
+            60% { transform: translate(-50%, -7px); }
+        }
+
+        /* 手機與平板版本的完美縮放 */
+        @media (max-width: 991.98px) {
+            #splash-screen {
+                flex-direction: column;
+                justify-content: center;
+                padding-top: 40px;
+            }
+            .splash-text-box {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            .splash-img {
+                height: 55vh; /* 手機上降低高度，避免擋住文字 */
+                aspect-ratio: auto;
+                width: 85vw;  /* 手機上改由寬度主導 */
+                border-width: 8px;
+            }
+            .scroll-indicator {
+                bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#main-navbar" data-bs-offset="80">
+
+    <div id="splash-screen">
+        <div class="container-fluid h-100 px-4 px-lg-5">
+            <div class="row h-100 align-items-center justify-content-evenly flex-column-reverse flex-lg-row">
+                
+                <div class="col-lg-5 splash-text-box text-center text-lg-start">
+                    <h1 class="splash-title">李始燕</h1>
+                    <h2 class="splash-subtitle">Lee Siyeon</h2>
+                    <p class="mt-4 fs-4 text-light opacity-75">QWER 主唱 ✕ 吉他手 ✕ 奇蹟的歌聲</p>
+                </div>
+                
+                <div class="col-lg-6 text-center pt-4 pt-lg-0">
+                    <img src="https://i.pinimg.com/236x/54/ec/22/54ec221a60dd402f21e43972ef029d6b.jpg" alt="Siyeon Cover" class="splash-img">
+                </div>
+
+            </div>
+        </div>
+        
+        <div class="scroll-indicator">
+            <i class="bi bi-chevron-compact-down"></i>
+        </div>
+    </div>
+
+    <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" style="color: #2E8B57;" href="#">SIYEON</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="#about">Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#journey">Journey</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#fancams">Stage & Fancams</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-banner">
+        <div>
+            <h1>李始燕 Lee Siyeon</h1>
+            <p>QWER 主唱 ✕ 吉他手 ✕ 奇蹟的歌聲</p>
+            <a href="#about" class="btn btn-outline-light mt-3 px-4 py-2 rounded-pill fw-bold">探索更多</a>
+        </div>
+    </header>
+
+    <section id="about" class="py-5 mt-4">
+        <div class="container">
+            <h2 class="section-title">關於Siyeon (Profile)</h2>
+            <div class="row align-items-center">
+                <div class="col-lg-5 mb-4 mb-lg-0 text-center">
+                    <img src="https://phinf.wevpstatic.net/MjAyNTAyMDdfMzUg/MDAxNzM4OTMyMDA3MjY5.85YItyUbKBPUwiv97MPtJYWhZP31Q0nZbsrWy3PwPFAg.nUcPgVyJEA7lrRe_CONUfOJJ4SAsptfPHcnD_2nG7l4g.JPEG/image.jpg" alt="Siyeon Portrait" 
+                        class="img-fluid rounded-4 shadow-lg mx-auto" 
+                        style="display: block; width: 450px; height: auto; border: 5px solid white; object-fit: contain;">
+                </div>
+                <div class="col-lg-7 pl-lg-5">
+                    <div class="info-card">
+                        <h3 class="fw-bold mb-4">突破語言與國界的實力派主唱</h3>
+                        <p class="text-muted mb-4" style="line-height: 1.8;">
+                            從小熱愛日本偶像文化的李始燕，憑藉著不屈不撓的毅力，跨越疫情的阻礙成為 NMB48 史上首位韓國籍成員。
+                            在累積了豐富的舞台經驗後，她歸國加入 QWER 樂團，以極具穿透力與爆發力的嗓音，為團隊注入了最強大的靈魂。
+                            她不僅擁有深厚的歌唱實力，其獨特的幽默感與流利的日語能力，更讓她成為連接世界粉絲的橋樑。
+                        </p>
+                        <ul class="list-unstyled info-list">
+                            <li><i class="bi bi-calendar-heart"></i> <strong>生日：</strong> 2000年5月16日</li>
+                            <li><i class="bi bi-geo-alt-fill"></i> <strong>出生地：</strong> 韓國首爾特別市 松坡區</li>
+                            <li><i class="bi bi-music-player"></i> <strong>樂團擔當：</strong> Main Vocal (主唱), Guitar (吉他)</li>
+                            <li><i class="bi bi-stars"></i> <strong>代表字母：</strong> R (來自 QWE<strong>R</strong>)</li>
+                            <li><i class="bi bi-award-fill"></i> <strong>特殊技能：</strong> JLPT N2 (滿分通過)、完美消化日韓雙語歌曲</li>
+                            <li><i class="bi bi-emoji-sunglasses"></i> <strong>粉絲名：</strong> Bawige (바위게)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="journey" class="py-5 bg-white">
+        <div class="container">
+            <h2 class="section-title">偶像追夢之旅 (The Journey)</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">2024 年 - 至今</div>
+                            <h4 class="fw-bold">逆行神話與音樂初一位</h4>
+                            <p class="text-muted">憑藉迷你專輯《MANITO》的主打歌《T.B.H (고민중독)》橫掃各大音源榜，並在各大校園祭展現強大 Live 實力。隨後以《My Name Is Malguem》奪得生涯首個音樂節目一位。</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2023 年 10 月</div>
+                            <h4 class="fw-bold">作為 QWER 主唱重新出道</h4>
+                            <p class="text-muted">接受 YouTuber 金雞蛋的邀請，成為 QWER 最後一塊拼圖。發行單曲專輯《Harmony from Discord》，正式以樂團主唱與吉他手身份在韓國展開活動。</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2021 年 8 月 - 2023 年 8 月</div>
+                            <h4 class="fw-bold">NMB48 的閃耀時刻</h4>
+                            <p class="text-muted">克服疫情帶來的重重難關，以 7.5 期生身份加入 NMB48，成為 48 Group 首位韓國籍成員。在劇場公演中展現獨特魅力並累積大量人氣，最終於 2023 年 8 月舉行畢業公演。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="fancams" class="py-5">
+        <div class="container">
+            <h2 class="section-title">舞台魅力與直拍 (Stage & Fancams)</h2>
+            <p class="text-center text-muted mb-5">點擊觀賞Siyeon極具爆發力的 Live 演唱與充滿感染力的直拍畫面</p>
+            
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="media-box p-2">
+                        <div class="ratio ratio-16x9">
+                            <iframe src="https://www.youtube.com/embed/v6xVldhvlrw?si=gIhexcw33mCzqZMU" title="QWER T.B.H" allowfullscreen></iframe>
+                        </div>
+                        <div class="p-3 text-center">
+                            <h5 class="fw-bold mb-1">[#MMA2024] QWER</h5>
+                            <span class="badge bg-danger">封神舞台</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="media-box p-2">
+                        <div class="ratio ratio-16x9">
+                            <iframe src="https://www.youtube.com/embed/h6uKq25d4Y0?si=G-UwmlB5VfE27Y8q" title="Siyeon Fancam" allowfullscreen></iframe>
+                        </div>
+                        <div class="p-3 text-center">
+                            <h5 class="fw-bold mb-1">행복해져라 Fancam</h5>
+                            <span class="badge bg-success">完全老婆</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="py-5 bg-white">
+        <div class="container">
+            <h2 class="section-title">魅力剪影 (Gallery)</h2>
+            <div class="row g-4">
+                <div class="col-md-4 col-6">
+                    <img src="https://scontent-tpe1-1.cdninstagram.com/v/t51.82787-15/649048037_18014928722818190_854018914229592327_n.jpg?stp=dst-jpg_e35_p720x720_tt6&_nc_cat=106&ig_cache_key=Mzg0NzU1NTA1Nzk5NTQ2OTAxMw%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTkyMC5zZHIuQzMifQ%3D%3D&_nc_ohc=aob--I2wrP8Q7kNvwHgIWSb&_nc_oc=Adp8poEDndnQGPBQnQDjqJPgDAVMHPTOl5WcxZ2nkLolLzbgSlXX3ZcFwex9PRsvV8U&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-tpe1-1.cdninstagram.com&_nc_gid=Jpkza2X4Yby9271sfX9wWQ&_nc_ss=7a32e&oh=00_Af3VBkQGfXVl8E50KasTvSmxkSLXam5y5Zx8XQARtRCAMg&oe=69D9AD58" class="gallery-img" alt="Gallery">
+                </div>
+                <div class="col-md-4 col-6">
+                    <img src="https://pbs.twimg.com/media/HC5YGD-bMAAEljA?format=jpg&name=small" class="gallery-img" alt="Gallery">
+                </div>
+                <div class="col-md-4 col-6">
+                    <img src="https://scontent-tpe1-1.cdninstagram.com/v/t51.82787-15/607271773_18007223471818190_1902488976696488289_n.jpg?stp=dst-jpg_e35_p720x720_tt6&_nc_cat=105&ig_cache_key=Mzc5NTQ3NjQyODI2NDUyNDc3OA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTkyMC5zZHIuQzMifQ%3D%3D&_nc_ohc=_0hFO1eI7AgQ7kNvwF38VnG&_nc_oc=Adr_G7q5gZ_ti0nVEfmMudyvlc-_G-BVUbqQ7Y4VmyoKHQj8eEqDDyzszaEPBNGqN8c&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-tpe1-1.cdninstagram.com&_nc_gid=syopAy5MsEVEbBTPeDsAkQ&_nc_ss=7a32e&oh=00_Af37BJz-yt3zS9QKBt_KtOIUIFYQjMQ6pLmJ31l3chY3AQ&oe=69D9BC26" class="gallery-img" alt="Gallery">
+                </div>
+            </div>
+            <div class="text-center mt-5">
+                <a href="https://www.instagram.com/siyo.co.kr/" target="_blank" class="btn btn-outline-dark rounded-pill px-4">
+                    <i class="bi bi-instagram me-2"></i>前往 Instagram 查看更多
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-4 mt-5">
+        <div class="container text-center">
+            <div class="mb-3">
+                <a href="https://www.instagram.com/siyo.co.kr/" class="text-light me-3 fs-4"><i class="bi bi-instagram"></i></a>
+                <a href="https://twitter.com/siyo_min" class="text-light me-3 fs-4"><i class="bi bi-twitter"></i></a>
+                <a href="https://www.youtube.com/@QWER_Band_official" class="text-light fs-4"><i class="bi bi-youtube"></i></a>
+            </div>
+            <p class="mb-0 small text-secondary">© 2026 Fanmade Profile for Lee Siyeon (QWER). Designed with passion.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        window.addEventListener('scroll', function() {
+            const splashScreen = document.getElementById('splash-screen');
+            // 當網頁往下捲動超過 50 像素時，觸發隱藏效果
+            if (window.scrollY > 50) {
+                splashScreen.classList.add('hidden');
+            } else {
+                // 如果使用者滑回最頂端，大圖會再次出現
+                splashScreen.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
